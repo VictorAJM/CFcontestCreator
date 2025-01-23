@@ -1,7 +1,7 @@
 from methods.user import User
 from methods.contest import Contest
 from methods.problemset import Problemset
-
+from objects.submission import Submission
 import helper
 
 url = "https://codeforces.com/api/"
@@ -24,7 +24,18 @@ _url = url + contest.list()
 #helper.requester(_url)
 
 _url = url + problemset.problems()
-helper.requester(_url)
+#helper.requester(_url)
 
 _url = url + problemset2.problems()
-helper.requester(_url)
+#helper.requester(_url)
+
+_url = url + user.status()
+response = helper.requester(_url)
+
+submissions = []
+for submissionJSON in response['result']:
+    submission = Submission().setId(submissionJSON['id']).setContestId(submissionJSON['contestId']).setVerdict(submissionJSON['verdict'])
+    print(submission.text())
+    submissions.append(submission)
+
+print(len(submissions))

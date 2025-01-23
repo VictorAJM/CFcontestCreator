@@ -8,6 +8,6 @@ def requester(request):
     response = requests.get(request)
     if response.status_code == 200:
         print("Success Call!")
-        print(response.json())
+        return response.json()
     else: 
         print(f"Failed with status code {response.status_code}")

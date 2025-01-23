@@ -13,4 +13,7 @@ class User:
     def rating(self):
         request = f"user.rating?handle={self.handle}"
         return request
-    
+
+    def status(self):
+        request = f"user.status?handle={self.handle}&count=2"
+        return request
