@@ -1,9 +1,10 @@
-from methods.user import User
-from methods.contest import Contest
-from methods.problemset import Problemset
-from objects.submission import Submission
-from verdict import Verdict
-import helper
+from api.methods.user import User
+from api.methods.contest import Contest
+from api.methods.problemset import Problemset
+from api.objects.submission import Submission
+from api.objects.problem import Problem
+from api.verdict import Verdict
+import api.helper as helper
 
 url = "https://codeforces.com/api/"
 
@@ -38,8 +39,10 @@ cnt = 0
 for submissionJSON in response['result']:
     if submissionJSON['verdict'] != Verdict.OK.value:
         continue
-    submission = Submission().setId(submissionJSON['id']).setVerdict(submissionJSON['verdict'])
+    problem = Problem(jsonData=submissionJSON['problem'])
+    submission = Submission().setId(submissionJSON['id']).setVerdict(submissionJSON['verdict']).setProblem(problem)
     if 'contestId' in submissionJSON:
         submission.setContestId(submissionJSON['contestId'])
     submissions.append(submission)
 print(f"Has resuelto: {len(submissions)} problemas!")
+print(submissions[-1])

@@ -4,7 +4,7 @@ class Submission:
             problem = None, verdict = None):
         self.id = id
         self.contestId = contestId
-        #self.problem = problem
+        self.problem = problem
         self.verdict = verdict
     
     def setId(self, id):
@@ -14,15 +14,14 @@ class Submission:
     def setContestId(self, contestId):
         self.contestId = contestId
         return self
-    #**
-    #def setProblem(self, problem):
-    #    self.problem = problem
-    #    return self 
-    #
+    
+    def setProblem(self, problem):
+        self.problem = problem
+        return self 
 
     def setVerdict(self, verdict):
         self.verdict = verdict
         return self
     
-    def text(self):
-        return f"id={self.id}, contestId={self.contestId}, verdict={self.verdict}"
+    def __str__(self):
+        return f"id={self.id}, contestId={self.contestId},problem={self.problem}, verdict={self.verdict}"
