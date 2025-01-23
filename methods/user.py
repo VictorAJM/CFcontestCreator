@@ -15,5 +15,5 @@ class User:
         return request
 
     def status(self):
-        request = f"user.status?handle={self.handle}&count=2"
+        request = f"user.status?handle={self.handle}"
         return request

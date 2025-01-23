@@ -2,6 +2,7 @@ from methods.user import User
 from methods.contest import Contest
 from methods.problemset import Problemset
 from objects.submission import Submission
+from verdict import Verdict
 import helper
 
 url = "https://codeforces.com/api/"
@@ -33,9 +34,12 @@ _url = url + user.status()
 response = helper.requester(_url)
 
 submissions = []
+cnt = 0
 for submissionJSON in response['result']:
-    submission = Submission().setId(submissionJSON['id']).setContestId(submissionJSON['contestId']).setVerdict(submissionJSON['verdict'])
-    print(submission.text())
+    if submissionJSON['verdict'] != Verdict.OK.value:
+        continue
+    submission = Submission().setId(submissionJSON['id']).setVerdict(submissionJSON['verdict'])
+    if 'contestId' in submissionJSON:
+        submission.setContestId(submissionJSON['contestId'])
     submissions.append(submission)
-
-print(len(submissions))
+print(f"Has resuelto: {len(submissions)} problemas!")
