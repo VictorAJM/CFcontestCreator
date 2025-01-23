@@ -4,8 +4,12 @@ import helper
 url = "https://codeforces.com/api/"
 
 user = User("Chaska")
-url = url + user.info()
+_url = url + user.info()
 
-print(url)
+helper.requester(_url)
 
-helper.requester(url)
+_url = url + user.blogEntries()
+helper.requester(_url)
+
+_url = url + user.rating()
+helper.requester(_url)
