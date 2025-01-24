@@ -24,21 +24,36 @@ class Problem:
         self.contestId = contestId
         return self
     
+    def getContestId(self):
+        return self.contestId
+    
     def setIndex(self, index):
         self.index = index
         return self
+    
+    def getIndex(self):
+        return self.index
 
     def setName(self, name):
         self.name = name
         return self
     
+    def getName(self):
+        return self.name
+    
     def setRating(self, rating):
         self.rating = rating
         return self
+    
+    def getRating(self):
+        return self.rating
 
     def setTags(self, tags):
         self.tags = tags
         return self
+    
+    def getTags(self):
+        return self.tags
     
     def addTag(self, tag):
         self.tag.append(tag)
