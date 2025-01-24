@@ -1,5 +1,4 @@
 from api.methods.user import User
-from api.methods.contest import Contest
 from api.methods.problemset import Problemset
 from api.objects.submission import Submission
 from api.objects.problem import Problem
@@ -13,7 +12,9 @@ contest = Contest()
 problemset = Problemset(['implementation', '2-sat'])
 problemset2 = Problemset()
 
-submissions = user.status().requester()
+problems = problemset.problemset().requester()
+for problem in problems:
+  print(problem)
 """
 submissions = []
 cnt = 0
