@@ -29,9 +29,9 @@ def averageRating(problems):
   totalRating /= len(problems)
   return totalRating
 
-def averageRatingSolvedProblems():
-  user = User("Chaska").status()
+def averageRatingSolvedProblems(handle):
+  user = User(handle).status()
   submissions = user.requester()
   okSubmissions = filterSubmissionBy(submissions, verdict = Verdict.OK.value)
   solvedProblems = getProblemsFromSolutions(okSubmissions)
-  return averageRating(solvedProblems)
+  return f"Tu rating promedio de problemas resueltos es: {averageRating(solvedProblems)} entre {len(solvedProblems)}"
