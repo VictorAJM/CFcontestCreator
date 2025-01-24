@@ -34,4 +34,4 @@ def averageRatingSolvedProblems(handle):
   submissions = user.requester()
   okSubmissions = filterSubmissionBy(submissions, verdict = Verdict.OK.value)
   solvedProblems = getProblemsFromSolutions(okSubmissions)
-  return f"Tu rating promedio de problemas resueltos es: {averageRating(solvedProblems)} entre {len(solvedProblems)}"
+  return f"Tu rating promedio de problemas resueltos es: {averageRating(solvedProblems)} entre {len(solvedProblems)} problemas"
