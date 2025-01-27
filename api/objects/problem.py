@@ -59,5 +59,8 @@ class Problem:
         self.tag.append(tag)
         return self
 
+    def getUrl(self):
+        return f"https://codeforces.com/contest/{self.contestId}/problem/{self.index}"
+
     def __str__(self):
         return f"[contestId:{self.contestId}, index:{self.index}, name:{self.name}, rating:{self.rating}, tags:{self.tags}]"
