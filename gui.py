@@ -8,21 +8,33 @@ minutes = 120
 created_widgets = []
 
 def restart_root():
-  for widget in created_widgets:
-    widget.destroy()
+    for widget in created_widgets:
+        widget.destroy()
+    created_widgets.clear()
 
-  data = open_json()
-  problems = getProblems(data['handle'], data['problems'], data['rating'])
-  for problem in problems:
-    problema = ProblemaGUI(master=root, texto1=problem[0], texto2=problem[1])
-    created_widgets.append(problema)
-  return
+    data = open_json()
+    problems = getProblems(data['handle'], data['problems'], data['rating'])
+    
+    problems_frame = Frame(root)
+    problems_frame.pack(pady=10)
+    
+    for idx, problem in enumerate(problems):
+
+      problema = ProblemaGUI(master=problems_frame, texto1=problem[0], texto2=problem[1])
+      created_widgets.append(problema)
+      
+      row = idx // 2 
+      col = idx % 2  
+      
+      problema.frame.grid(row=row, column=col, padx=10, pady=10)
+
+    return
 
 def showGUI():
   global root
   root = Tk()
   root.title('Codeforces practica')
-  root.geometry("900x720")
+  root.geometry("1000x800")
   photo = PhotoImage(file = "assets/logo.jpg")
   root.iconphoto(False, photo)
 
