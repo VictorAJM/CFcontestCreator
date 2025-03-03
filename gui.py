@@ -6,6 +6,8 @@ minutes = 120
 def showGUI():
   root = Tk()
   root.title('Codeforces practica')
+  photo = PhotoImage(file = "logo.jpg")
+  root.iconphoto(False, photo)
 
   menu = Menu(root)
   root.config(menu=menu)
