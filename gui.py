@@ -1,10 +1,19 @@
 from tkinter import *
 from helper import *
 from problemaGUI import ProblemaGUI
+import random
 
 minutes = 120
+created_widgets = []
+
+def restart_root():
+  for widget in created_widgets:
+    widget.destroy()
+  problema = ProblemaGUI(master=root, texto1=str(random.randint(0, 100)), texto2="b")
+  created_widgets.append(problema)
 
 def showGUI():
+  global root
   root = Tk()
   root.title('Codeforces practica')
   root.geometry("900x720")
@@ -23,10 +32,8 @@ def showGUI():
   menu.add_cascade(label='Help', menu=helpmenu)
   helpmenu.add_command(label='About')
 
-  problema = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
-  problema1 = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
-
-  problema2 = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
-  problema3 = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
+  restart_button = Button(root, text="Reiniciar root", command=restart_root)
+  restart_button.pack(pady=20)
 
   root.mainloop()
+
