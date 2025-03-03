@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
+import webbrowser
 
 class ProblemaGUI:
   
@@ -12,6 +13,7 @@ class ProblemaGUI:
     self.borde = borde
     self.margen = margen
     self.max_size = max_size
+    self.url = texto2
 
     self.img = Image.open(self.imagen_ruta)
     self.img = self.img.resize(self.max_size, Image.Resampling.LANCZOS)
@@ -30,6 +32,23 @@ class ProblemaGUI:
 
     text_label2 = tk.Label(self.frame, text=self.texto2, font=("Arial", 14), bg="lightgrey")
     text_label2.pack(pady=5)
+
+    self.frame.bind("<Enter>", self.resaltar)
+    self.frame.bind("<Leave>", self.restaurar_color)
+    self.frame.bind("<Button-1>", self.abrir_pagina)
+
+
+  def resaltar(self, event):
+    # Cambiar el color de fondo cuando el mouse entra
+    self.frame.config(bg="lightblue")
+
+  def restaurar_color(self, event):
+    # Restaurar el color de fondo cuando el mouse sale
+    self.frame.config(bg="lightgrey")
+
+  def abrir_pagina(self, event):
+    # Abrir la página web cuando se hace clic en el marco
+    webbrowser.open(self.url)
 
   def destroy(self):
     if self.frame:
