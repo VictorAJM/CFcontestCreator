@@ -1,5 +1,5 @@
 import json
-from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button
+from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage
 
 JSON_PATH = 'data.json'
 

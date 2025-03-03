@@ -1,12 +1,14 @@
 from tkinter import *
 from helper import *
+from problemaGUI import ProblemaGUI
 
 minutes = 120
 
 def showGUI():
   root = Tk()
   root.title('Codeforces practica')
-  photo = PhotoImage(file = "logo.jpg")
+  root.geometry("900x720")
+  photo = PhotoImage(file = "assets/logo.jpg")
   root.iconphoto(False, photo)
 
   menu = Menu(root)
@@ -20,5 +22,11 @@ def showGUI():
   helpmenu = Menu(menu)
   menu.add_cascade(label='Help', menu=helpmenu)
   helpmenu.add_command(label='About')
+
+  problema = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
+  problema1 = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
+
+  problema2 = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
+  problema3 = ProblemaGUI(root, "assets/cf_logo.jpg", "Primera", "Segunda")
 
   root.mainloop()
