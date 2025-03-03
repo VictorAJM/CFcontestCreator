@@ -1,5 +1,6 @@
 from tkinter import *
 from helper import *
+from api.helper import *
 from problemaGUI import ProblemaGUI
 import random
 
@@ -9,8 +10,13 @@ created_widgets = []
 def restart_root():
   for widget in created_widgets:
     widget.destroy()
-  problema = ProblemaGUI(master=root, texto1=str(random.randint(0, 100)), texto2="b")
-  created_widgets.append(problema)
+
+  data = open_json()
+  problems = getProblems(data['handle'], data['problems'], data['rating'])
+  for problem in problems:
+    problema = ProblemaGUI(master=root, texto1=problem[0], texto2=problem[1])
+    created_widgets.append(problema)
+  return
 
 def showGUI():
   global root
@@ -32,7 +38,7 @@ def showGUI():
   menu.add_cascade(label='Help', menu=helpmenu)
   helpmenu.add_command(label='About')
 
-  restart_button = Button(root, text="Reiniciar root", command=restart_root)
+  restart_button = Button(root, text="Generar problemas", command=restart_root)
   restart_button.pack(pady=20)
 
   root.mainloop()

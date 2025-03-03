@@ -64,7 +64,7 @@ def getProblems(handle, problems, rating):
   if len(validProblems) < problems:
     print("No hay problemas suficientes :(")
     return
-  print(len(validProblems))
+  
   randomProblems = random.sample(validProblems, problems)
-  for prob in randomProblems:
-    print(prob.getUrl())
+  problems  = [[prob.getName(), prob.getUrl()] for prob in randomProblems]
+  return problems

@@ -8,7 +8,7 @@ def open_json():
     data = None
     with open(JSON_PATH, 'r', encoding='utf-8') as file:
       data = json.load(file)
-      messagebox.showinfo("JSON Content", json.dumps(data, indent=4))
+      return data
   except Exception as e:
     messagebox.showerror("Error", f'Failed to open Json file: {e}')
 
