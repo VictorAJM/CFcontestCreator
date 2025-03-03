@@ -1,70 +1,27 @@
-import random
-from api.methods.user import User
-from api.methods.problemset import Problemset
-from api.verdict import Verdict
+import json
+from tkinter import Tk, Menu, filedialog, messagebox
 
-def filterSubmissionBy(submissions, verdict = None, rating = None):
-  _submissions = []
-  for submission in submissions:
-    if verdict is not None and submission.getVerdict() == verdict:
-      _submissions.append(submission)
-      continue
-    if rating is not None and submission.getProblem().getRating() == rating:
-      _submissions.append(submission)
-      continue
-  return _submissions
+JSON_PATH = 'data.json'
 
-def filterProblemsBy(problems, rating = None):
-  _problems = []
-  for problem in problems:
-    if rating is not None and problem.getRating() == rating:
-      _problems.append(problem)
-  return _problems
-
-def getProblemsFromSolutions(submissions):
-  problems = []
-  problemNames = []
-  for submission in submissions:
-    if submission.getProblem().getName() not in problemNames:
-        problems.append(submission.getProblem())
-        problemNames.append(submission.getProblem().getName())
-  return problems
-
-def averageRating(problems):
-  totalRating = 0
-  for problem in problems:
-    if problem.getRating() is not None:
-      totalRating += problem.getRating()
-  totalRating /= len(problems)
-  return totalRating
-
-def averageRatingSolvedProblems(handle):
-  user = User(handle).status()
-  submissions = user.requester()
-  okSubmissions = filterSubmissionBy(submissions, verdict = Verdict.OK.value)
-  solvedProblems = getProblemsFromSolutions(okSubmissions)
-  return f"Tu rating promedio de problemas resueltos es: {averageRating(solvedProblems)} entre {len(solvedProblems)} problemas"
-
-def getNotTriedProblems(handle):
-  user = User(handle).status()
-  submissions = user.requester()
-  problemset = (Problemset().problemset()).requester()
-  problemsTriedName = set()
-  _problems = []
-  for submission in submissions:
-    problemsTriedName.add(submission.getProblem().getName())
-  for problem in problemset:
-    if problem.getName() not in problemsTriedName:
-      _problems.append(problem)
-  return _problems
-
-def getProblems(handle, problems, rating):
-  availableProblems = getNotTriedProblems(handle)
-  validProblems = filterProblemsBy(availableProblems, rating = rating)
-  if len(validProblems) < problems:
-    print("No hay problemas suficientes :(")
-    return
-  print(len(validProblems))
-  randomProblems = random.sample(validProblems, problems)
-  for prob in randomProblems:
-    print(prob.getUrl())
+def open_json():
+  try:
+    data = None
+    with open(JSON_PATH, 'r', encoding='utf-8') as file:
+      data = json.load(file)
+      messagebox.showinfo("JSON Content", json.dumps(data, indent=4))
+  except Exception as e:
+    messagebox.showerror("Error", f'Failed to open Json file: {e}')
+  
+def edit_json():
+  try:
+    with open(JSON_PATH, 'r+', encoding='utf-8') as file:
+      data = json.load(file)
+      #key = "new_key"
+      #value = "new_value"
+      #data[key] = value
+      file.seek(0)
+      json.dump(data, file, indent = 4)
+      file.truncate()
+      messagebox.showinfo("Success", f'Modified {key}: {value} to JSON file')
+  except Exception as e:
+    messagebox.showerror("Error", f'Failed to edit Json File: {e}') 
