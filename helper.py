@@ -1,70 +1,58 @@
-import random
-from api.methods.user import User
-from api.methods.problemset import Problemset
-from api.verdict import Verdict
+import json
+from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage
 
-def filterSubmissionBy(submissions, verdict = None, rating = None):
-  _submissions = []
-  for submission in submissions:
-    if verdict is not None and submission.getVerdict() == verdict:
-      _submissions.append(submission)
-      continue
-    if rating is not None and submission.getProblem().getRating() == rating:
-      _submissions.append(submission)
-      continue
-  return _submissions
+JSON_PATH = 'data.json'
 
-def filterProblemsBy(problems, rating = None):
-  _problems = []
-  for problem in problems:
-    if rating is not None and problem.getRating() == rating:
-      _problems.append(problem)
-  return _problems
+def open_json():
+  try:
+    data = None
+    with open(JSON_PATH, 'r', encoding='utf-8') as file:
+      data = json.load(file)
+      return data
+  except Exception as e:
+    messagebox.showerror("Error", f'Failed to open Json file: {e}')
 
-def getProblemsFromSolutions(submissions):
-  problems = []
-  problemNames = []
-  for submission in submissions:
-    if submission.getProblem().getName() not in problemNames:
-        problems.append(submission.getProblem())
-        problemNames.append(submission.getProblem().getName())
-  return problems
+def save_json(data, window):
+  try:
+    with open(JSON_PATH, 'w', encoding='utf-8') as file:
+      json.dump(data, file, indent=4)
+      messagebox.showinfo("Success", "JSON file updated successfully.")
+      window.destroy()
+  except Exception as e:
+    messagebox.showerror("Error", f'Failed to save JSON file: {e}')
+  
+def edit_json_window(data):
+  window = Toplevel()
+  window.title("Editar configuración")
 
-def averageRating(problems):
-  totalRating = 0
-  for problem in problems:
-    if problem.getRating() is not None:
-      totalRating += problem.getRating()
-  totalRating /= len(problems)
-  return totalRating
+  Label(window, text="Handle:").grid(row=0, column=0)
+  handle_entry = Entry(window)
+  handle_entry.grid(row=0, column=1)
+  handle_entry.insert(0, data.get("handle", ""))
 
-def averageRatingSolvedProblems(handle):
-  user = User(handle).status()
-  submissions = user.requester()
-  okSubmissions = filterSubmissionBy(submissions, verdict = Verdict.OK.value)
-  solvedProblems = getProblemsFromSolutions(okSubmissions)
-  return f"Tu rating promedio de problemas resueltos es: {averageRating(solvedProblems)} entre {len(solvedProblems)} problemas"
+  Label(window, text="Problems:").grid(row=1, column=0)
+  problems_entry = Entry(window)
+  problems_entry.grid(row=1, column=1)
+  problems_entry.insert(0, str(data.get("problems", "")))
+  
+  Label(window, text="Rating:").grid(row=2, column=0)
+  rating_entry = Entry(window)
+  rating_entry.grid(row=2, column=1)
+  rating_entry.insert(0, str(data.get("rating", "")))
 
-def getNotTriedProblems(handle):
-  user = User(handle).status()
-  submissions = user.requester()
-  problemset = (Problemset().problemset()).requester()
-  problemsTriedName = set()
-  _problems = []
-  for submission in submissions:
-    problemsTriedName.add(submission.getProblem().getName())
-  for problem in problemset:
-    if problem.getName() not in problemsTriedName:
-      _problems.append(problem)
-  return _problems
+  def save_changes():
+    data["handle"] = handle_entry.get()
+    data["problems"] = int(problems_entry.get())
+    data["rating"] = int(rating_entry.get())
+    save_json(data, window)
+    
+  Button(window, text="Save", command=save_changes).grid(row=3, column=0, columnspan=2)
 
-def getProblems(handle, problems, rating):
-  availableProblems = getNotTriedProblems(handle)
-  validProblems = filterProblemsBy(availableProblems, rating = rating)
-  if len(validProblems) < problems:
-    print("No hay problemas suficientes :(")
-    return
-  print(len(validProblems))
-  randomProblems = random.sample(validProblems, problems)
-  for prob in randomProblems:
-    print(prob.getUrl())
+
+def edit_json():
+  try:
+    with open(JSON_PATH, 'r+', encoding='utf-8') as file:
+      data = json.load(file)
+      edit_json_window(data)
+  except Exception as e:
+    messagebox.showerror("Error", f'Failed to edit Json File: {e}') 
