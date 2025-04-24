@@ -2,12 +2,15 @@ import tkinter as tk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import webbrowser
+import os
 
 class ProblemaGUI:
   
   def __init__(self, master, texto1, texto2, borde = 5, margen = 10, max_size=(50, 50), row = 0, column = 0):
     self.master = master
-    self.imagen_ruta = "assets/cf_logo.jpg"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    logo_path = os.path.join(current_dir, "assets", "logo.jpg")
+    self.imagen_ruta = logo_path
     self.texto1 = texto1
     self.texto2 = texto2
     self.borde = borde

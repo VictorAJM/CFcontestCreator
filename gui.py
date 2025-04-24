@@ -39,7 +39,7 @@ def showGUI():
   # Obtener el directorio actual del script
   current_dir = os.path.dirname(os.path.abspath(__file__))
   # Construir la ruta completa al archivo
-  logo_path = os.path.join(current_dir, "assets", "logo.png")
+  logo_path = os.path.join(current_dir, "assets", "logo.jpg")
 
   photo = PhotoImage(file=logo_path)
   root.iconphoto(False, photo)
