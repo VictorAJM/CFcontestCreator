@@ -1,7 +1,4 @@
-import argparse
-
 from gui import *
-from helper import *
 
 def main():
   showGUI()
