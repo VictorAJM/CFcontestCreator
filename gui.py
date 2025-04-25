@@ -14,7 +14,7 @@ def restart_root():
     created_widgets.clear()
 
     data = open_json()
-    problems = getProblems(data['handle'], data['problems'], data['rating'], data['minimumSolvedCount'], data['maximumSolvedCount'])
+    problems = getProblems(data['handle'], data['problems'], data['minimumRating'],data['maximumRating'], data['minimumSolvedCount'], data['maximumSolvedCount'])
     
     problems_frame = Frame(root)
     problems_frame.pack(pady=10)

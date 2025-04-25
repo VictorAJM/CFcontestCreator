@@ -14,10 +14,12 @@ def filterSubmissionBy(submissions, verdict = None, rating = None):
       continue
   return _submissions
 
-def filterProblemsBy(problems, rating = None, minimumSolvedCount = 0, maximumSolvedCount = 999999):
+def filterProblemsBy(problems, minimumRating = 0, maximumRating = 9999, minimumSolvedCount = 0, maximumSolvedCount = 999999):
   _problems = []
   for problem in problems:
-    if rating is not None and problem.getRating() != rating: continue
+    if problem.getRating() is None: continue
+    if minimumRating > problem.getRating(): continue
+    if maximumRating < problem.getRating(): continue
     if minimumSolvedCount > problem.getSolvedCount(): continue
     if maximumSolvedCount < problem.getSolvedCount(): continue
     _problems.append(problem)
@@ -61,9 +63,9 @@ def getNotTriedProblems(handle):
       _problems.append(problem)
   return _problems
 
-def getProblems(handle, problems, rating, minimumSolvedCount = 0, maximumSolvedCount = 999999):
+def getProblems(handle, problems, minimumRating, maximumRating, minimumSolvedCount = 0, maximumSolvedCount = 999999):
   availableProblems = getNotTriedProblems(handle)
-  validProblems = filterProblemsBy(availableProblems, rating = rating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount)
+  validProblems = filterProblemsBy(availableProblems, minimumRating = minimumRating, maximumRating=maximumRating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount)
   if len(validProblems) < problems:
     print("No hay problemas suficientes :(")
     return
