@@ -1,13 +1,14 @@
 class Problem:
     def __init__(
             self, contestId = None, index = None, name = None, rating = None,
-            tags = [], jsonData = None
+            tags = [], solvedCount = None, jsonData = None
     ):
         self.contestId = contestId
         self.index = index
         self.name = name
         self.rating = rating
         self.tags = tags
+        self.solvedCount = solvedCount
         if jsonData is not None:
             if 'contestId' in jsonData:
                 self.contestId = jsonData['contestId']
@@ -47,6 +48,9 @@ class Problem:
     
     def getRating(self):
         return self.rating
+      
+    def getSolvedCount(self):
+        return self.solvedCount
 
     def setTags(self, tags):
         self.tags = tags

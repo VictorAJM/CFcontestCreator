@@ -19,8 +19,11 @@ class ProblemsetProblems(APICall):
 
     def responseObject(self, response):
         problems = []
-        for JSON in response['result']['problems']:
-            problem = Problem(jsonData=JSON)
+        solvedCount = []
+        for JSON in response['result']['problemStatistics']:
+          solvedCount.append(JSON['solvedCount'])
+        for idx, JSON in enumerate(response['result']['problems']):
+            problem = Problem(jsonData=JSON, solvedCount=solvedCount[idx])
             problems.append(problem)
         return problems
 
