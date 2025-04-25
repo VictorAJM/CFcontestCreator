@@ -18,6 +18,7 @@ def restart_root():
     
     problems_frame = Frame(root)
     problems_frame.pack(pady=10)
+    created_widgets.append(problems_frame) 
     
     for idx, problem in enumerate(problems):
 
