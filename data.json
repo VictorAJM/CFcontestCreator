@@ -5,5 +5,6 @@
   "maximumRating": 2400,
   "minimumSolvedCount": 1500,
   "maximumSolvedCount": 3000,
+  "tags": [],
   "problemsFolder": "../codeforces"
 }
