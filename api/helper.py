@@ -73,6 +73,7 @@ def getProblems(__data):
   maximumRating = data.getMaximumRating()
   minimumSolvedCount = data.getMinimumSolvedCount(failed = 0)
   maximumSolvedCount = data.getMaximumSolvedCount(failed = 999999)
+  tags = data.getTags()
   
   availableProblems = getNotTriedProblems(handle)
   validProblems = filterProblemsBy(availableProblems, minimumRating = minimumRating, maximumRating=maximumRating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount)

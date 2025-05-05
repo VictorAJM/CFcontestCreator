@@ -1,7 +1,18 @@
 import json
 from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage
 
+from exceptions.invalidJsonData import InvalidJsonDataError
+from api.tags import Tags
+
 JSON_PATH = 'data.json'
+
+def validate_json_data(data):
+  rawTags = data["tags"] if "tags" in data else ""
+  rawTags = rawTags.split(',')
+  rawTags = [tag.strip().upper() for tag in rawTags]
+  for tag in rawTags:
+    if tag not in Tags.__members__:
+      raise InvalidJsonDataError(f"{tag} is not a valid tag in Tags")
 
 def open_json():
   try:
@@ -36,11 +47,16 @@ def edit_json_window(data):
     cnt += 1
 
   def save_changes():
-    cnt = 0
-    for key, value in data.items():
-      data[key] = entries[cnt].get()
-      cnt += 1
-    save_json(data, window)
+      try:
+          for i, key in enumerate(data.keys()):
+              data[key] = entries[i].get()
+          validate_json_data(data)
+          save_json(data, window)
+      except InvalidJsonDataError as ve:
+          messagebox.showerror("Validation Error", str(ve))
+      except Exception as e:
+          messagebox.showerror("Unexpected Error", f"An unexpected error occurred: {e}")
+
     
   Button(window, text="Save", command=save_changes).grid(row=cnt, column=0, columnspan=2)
 

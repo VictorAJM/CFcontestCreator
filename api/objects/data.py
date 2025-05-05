@@ -1,3 +1,5 @@
+from api.tags import Tags
+
 class Data:
   def __init__(self, data):
     self.data = data
@@ -32,3 +34,11 @@ class Data:
     if "problemsFolder" in self.data:
       return self.data["problemsFolder"]
     return failed
+  
+  def getTags(self):
+    rawTags = self.data["tags"] if "tags" in self.data else ""
+    rawTags = rawTags.split(',')
+    rawTags = [tag.strip().upper() for tag in rawTags]
+
+    tags = [Tags[tag].value for tag in rawTags if tag in Tags.__members__]
+    return tags
