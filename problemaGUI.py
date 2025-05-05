@@ -13,8 +13,12 @@ class ProblemaGUI:
     self.fileName = fileName
     joined_path = os.path.join(current_dir, filePath, self.fileName + ".cpp")
     self.filePath = os.path.abspath(os.path.normpath(joined_path))
-    print(self.filePath)
     self.imagen_ruta = logo_path
+    
+    self.template_path = os.path.join(current_dir, "template.cpp")
+    with open(self.template_path, "r") as template_file:
+        self.default_code = template_file.read()    
+    
     self.texto1 = texto1
     self.texto2 = texto2
     self.borde = borde
@@ -54,7 +58,12 @@ class ProblemaGUI:
     self.frame.config(bg="lightgrey")
 
   def abrir_pagina(self, event):
-    print(self.filePath, self.fileName)
+  
+    os.makedirs(os.path.dirname(self.filePath), exist_ok=True)
+    if not os.path.exists(self.filePath):
+        with open(self.filePath, "w") as f:
+            f.write(self.default_code)  
+    
     webbrowser.open(self.url)
 
   def destroy(self):
