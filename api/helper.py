@@ -15,7 +15,7 @@ def filterSubmissionBy(submissions, verdict = None, rating = None):
       continue
   return _submissions
 
-def filterProblemsBy(problems, minimumRating = 0, maximumRating = 9999, minimumSolvedCount = 0, maximumSolvedCount = 999999):
+def filterProblemsBy(problems, minimumRating = 0, maximumRating = 9999, minimumSolvedCount = 0, maximumSolvedCount = 999999, tags = [], filterTagsBy = "AND"):
   _problems = []
   for problem in problems:
     if problem.getRating() is None: continue
@@ -77,6 +77,7 @@ def getProblems(__data):
   
   availableProblems = getNotTriedProblems(handle)
   validProblems = filterProblemsBy(availableProblems, minimumRating = minimumRating, maximumRating=maximumRating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount)
+  validProblems = filterProblemsBy(tags)
   if len(validProblems) < problems:
     print("No hay problemas suficientes :(")
     return

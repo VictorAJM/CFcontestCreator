@@ -1,10 +1,11 @@
 {
   "handle": "Chaska",
-  "problems": 1,
-  "minimumRating": 2200,
-  "maximumRating": 2400,
-  "minimumSolvedCount": 1500,
-  "maximumSolvedCount": 3000,
-  "tags": [],
+  "problems": "1",
+  "minimumRating": "2200",
+  "maximumRating": "2400",
+  "minimumSolvedCount": "1500",
+  "maximumSolvedCount": "3000",
+  "tags": "GRAPHS,TWO_SAT",
+  "filterTagsBy": "AND",
   "problemsFolder": "../codeforces"
 }

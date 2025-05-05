@@ -13,6 +13,9 @@ def validate_json_data(data):
   for tag in rawTags:
     if tag not in Tags.__members__:
       raise InvalidJsonDataError(f"{tag} is not a valid tag in Tags")
+    
+  if data["filterTagsBy"] not in ["OR", "AND"]:
+    raise InvalidJsonDataError(f"filterTags is not OR or AND")
 
 def open_json():
   try:
