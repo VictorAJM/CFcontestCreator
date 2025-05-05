@@ -23,30 +23,26 @@ def save_json(data, window):
   
 def edit_json_window(data):
   window = Toplevel()
+  window.geometry("400x300")
   window.title("Editar configuración")
-
-  Label(window, text="Handle:").grid(row=0, column=0)
-  handle_entry = Entry(window)
-  handle_entry.grid(row=0, column=1)
-  handle_entry.insert(0, data.get("handle", ""))
-
-  Label(window, text="Problems:").grid(row=1, column=0)
-  problems_entry = Entry(window)
-  problems_entry.grid(row=1, column=1)
-  problems_entry.insert(0, str(data.get("problems", "")))
-  
-  Label(window, text="Rating:").grid(row=2, column=0)
-  rating_entry = Entry(window)
-  rating_entry.grid(row=2, column=1)
-  rating_entry.insert(0, str(data.get("rating", "")))
+  cnt = 0
+  entries = []
+  for key, value in data.items():
+    
+    Label(window, text=str(key)+":").grid(row=cnt, column=0)
+    entries.append(Entry(window))
+    entries[-1].grid(row=cnt, column=1)
+    entries[-1].insert(0, value)
+    cnt += 1
 
   def save_changes():
-    data["handle"] = handle_entry.get()
-    data["problems"] = int(problems_entry.get())
-    data["rating"] = int(rating_entry.get())
+    cnt = 0
+    for key, value in data.items():
+      data[key] = entries[cnt].get()
+      cnt += 1
     save_json(data, window)
     
-  Button(window, text="Save", command=save_changes).grid(row=3, column=0, columnspan=2)
+  Button(window, text="Save", command=save_changes).grid(row=cnt, column=0, columnspan=2)
 
 
 def edit_json():
