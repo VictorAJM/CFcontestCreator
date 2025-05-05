@@ -42,3 +42,7 @@ class Data:
 
     tags = [Tags[tag].value for tag in rawTags if tag in Tags.__members__]
     return tags
+  
+  def getFilterTags(self, failed="OR"):
+    filterTags = self.data["filterTagsBy"] if "filterTagsBy" in self.data else failed
+    return filterTags

@@ -15,7 +15,7 @@ def filterSubmissionBy(submissions, verdict = None, rating = None):
       continue
   return _submissions
 
-def filterProblemsBy(problems, minimumRating = 0, maximumRating = 9999, minimumSolvedCount = 0, maximumSolvedCount = 999999, tags = [], filterTagsBy = "AND"):
+def filterProblemsBy(problems, minimumRating = 0, maximumRating = 9999, minimumSolvedCount = 0, maximumSolvedCount = 999999, tags = [], filterTagsBy = "OR"):
   _problems = []
   for problem in problems:
     if problem.getRating() is None: continue
@@ -23,9 +23,22 @@ def filterProblemsBy(problems, minimumRating = 0, maximumRating = 9999, minimumS
     if maximumRating < problem.getRating(): continue
     if minimumSolvedCount > problem.getSolvedCount(): continue
     if maximumSolvedCount < problem.getSolvedCount(): continue
-    _problems.append(problem)
-      
-  return _problems
+    
+    problem_tags = problem.getTags()
+    if len(tags) > 0:
+      if filterTagsBy == "AND":
+        all_tags_present = all(tag in problem_tags for tag in tags)
+        if all_tags_present:
+          _problems.append(problem)
+      else:
+        any_tag_present = any(tag in problem_tags for tag in tags)
+        if any_tag_present:
+          _problems.append(problem)
+    else:
+      _problems.append(problem)
+
+        
+  return _problems  
 
 def getProblemsFromSolutions(submissions):
   problems = []
@@ -74,13 +87,13 @@ def getProblems(__data):
   minimumSolvedCount = data.getMinimumSolvedCount(failed = 0)
   maximumSolvedCount = data.getMaximumSolvedCount(failed = 999999)
   tags = data.getTags()
+  filterTags = data.getFilterTags()
   
   availableProblems = getNotTriedProblems(handle)
-  validProblems = filterProblemsBy(availableProblems, minimumRating = minimumRating, maximumRating=maximumRating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount)
-  validProblems = filterProblemsBy(tags)
+  validProblems = filterProblemsBy(availableProblems, minimumRating = minimumRating, maximumRating=maximumRating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount, tags = tags, filterTagsBy=filterTags)
   if len(validProblems) < problems:
     print("No hay problemas suficientes :(")
-    return
+    return []
   
   problems = random.sample(validProblems, problems)
   return problems
