@@ -6,10 +6,14 @@ import os
 
 class ProblemaGUI:
   
-  def __init__(self, master, texto1, texto2, borde = 5, margen = 10, max_size=(50, 50), row = 0, column = 0):
+  def __init__(self, master, texto1, texto2, filePath='', fileName = 'dummyText', borde = 5, margen = 10, max_size=(50, 50), row = 0, column = 0):
     self.master = master
     current_dir = os.path.dirname(os.path.abspath(__file__))
     logo_path = os.path.join(current_dir, "assets", "logo.jpg")
+    self.fileName = fileName
+    joined_path = os.path.join(current_dir, filePath, self.fileName + ".cpp")
+    self.filePath = os.path.abspath(os.path.normpath(joined_path))
+    print(self.filePath)
     self.imagen_ruta = logo_path
     self.texto1 = texto1
     self.texto2 = texto2
@@ -50,6 +54,7 @@ class ProblemaGUI:
     self.frame.config(bg="lightgrey")
 
   def abrir_pagina(self, event):
+    print(self.filePath, self.fileName)
     webbrowser.open(self.url)
 
   def destroy(self):

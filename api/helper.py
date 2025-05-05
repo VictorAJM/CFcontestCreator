@@ -70,6 +70,5 @@ def getProblems(handle, problems, minimumRating, maximumRating, minimumSolvedCou
     print("No hay problemas suficientes :(")
     return
   
-  randomProblems = random.sample(validProblems, problems)
-  problems  = [[prob.getName(), prob.getUrl()] for prob in randomProblems]
+  problems = random.sample(validProblems, problems)
   return problems
