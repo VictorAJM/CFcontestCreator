@@ -14,7 +14,7 @@ def restart_root():
     created_widgets.clear()
 
     data = open_json()
-    problems = getProblems(data['handle'], data['problems'], data['minimumRating'],data['maximumRating'], data['minimumSolvedCount'], data['maximumSolvedCount'])
+    problems = getProblems(data)
     
     problems_data = [[prob.getName(), prob.getUrl(), str(prob.getContestId())+str(prob.getIndex())] for prob in problems]
     
@@ -22,8 +22,10 @@ def restart_root():
     problems_frame.pack(pady=10)
     created_widgets.append(problems_frame) 
     
+    filePath = Data(data).getProblemsFolder()
+    
     for idx, problem in enumerate(problems_data):
-      problema = ProblemaGUI(master=problems_frame, texto1=problem[0], texto2=problem[1], filePath=data['problemsFolder'], fileName = problem[2])
+      problema = ProblemaGUI(master=problems_frame, texto1=problem[0], texto2=problem[1], filePath=filePath, fileName = problem[2])
       created_widgets.append(problema)
       
       row = idx // 2 

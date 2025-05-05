@@ -2,6 +2,7 @@ import random
 from api.methods.user import User
 from api.methods.problemset import Problemset
 from api.verdict import Verdict
+from api.objects.data import Data
 
 def filterSubmissionBy(submissions, verdict = None, rating = None):
   _submissions = []
@@ -63,7 +64,16 @@ def getNotTriedProblems(handle):
       _problems.append(problem)
   return _problems
 
-def getProblems(handle, problems, minimumRating, maximumRating, minimumSolvedCount = 0, maximumSolvedCount = 999999):
+def getProblems(__data):
+  
+  data = Data(__data)
+  handle = data.getHandle()
+  problems = data.getProblems()
+  minimumRating = data.getMinimumRating()
+  maximumRating = data.getMaximumRating()
+  minimumSolvedCount = data.getMinimumSolvedCount(failed = 0)
+  maximumSolvedCount = data.getMaximumSolvedCount(failed = 999999)
+  
   availableProblems = getNotTriedProblems(handle)
   validProblems = filterProblemsBy(availableProblems, minimumRating = minimumRating, maximumRating=maximumRating, minimumSolvedCount = minimumSolvedCount, maximumSolvedCount = maximumSolvedCount)
   if len(validProblems) < problems:
