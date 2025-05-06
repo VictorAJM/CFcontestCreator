@@ -1,5 +1,5 @@
 import json
-from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage
+from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage, StringVar, OptionMenu
 
 from exceptions.invalidJsonData import InvalidJsonDataError
 from api.tags import Tags
@@ -40,25 +40,34 @@ def edit_json_window(data):
   window.geometry("400x300")
   window.title("Editar configuración")
   cnt = 0
-  entries = []
+  entries = {}
   for key, value in data.items():
-    
     Label(window, text=str(key)+":").grid(row=cnt, column=0)
-    entries.append(Entry(window))
-    entries[-1].grid(row=cnt, column=1)
-    entries[-1].insert(0, value)
+    if key == "filterTagsBy":
+      var = StringVar(value=value)
+      option_menu = OptionMenu(window, var, "OR", "AND")
+      option_menu.grid(row=cnt, column=1)
+      entries[key] = var 
+    else:
+      entry = Entry(window)
+      entry.grid(row=cnt, column=1)
+      entry.insert(0, value)
+      entries[key] = entry
     cnt += 1
 
   def save_changes():
-      try:
-          for i, key in enumerate(data.keys()):
-              data[key] = entries[i].get()
-          validate_json_data(data)
-          save_json(data, window)
-      except InvalidJsonDataError as ve:
-          messagebox.showerror("Validation Error", str(ve))
-      except Exception as e:
-          messagebox.showerror("Unexpected Error", f"An unexpected error occurred: {e}")
+    try:
+      for i, key in enumerate(data.keys()):
+        if key == "filterTagsBy":
+          data[key] = entries[key].get()
+        else:
+          data[key] = entries[key].get()  
+      validate_json_data(data)
+      save_json(data, window)
+    except InvalidJsonDataError as ve:
+      messagebox.showerror("Validation Error", str(ve))
+    except Exception as e:
+      messagebox.showerror("Unexpected Error", f"An unexpected error occurred: {e}")
 
     
   Button(window, text="Save", command=save_changes).grid(row=cnt, column=0, columnspan=2)
