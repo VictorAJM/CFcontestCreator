@@ -1,6 +1,6 @@
 import json
-from tkinter import Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage, StringVar, OptionMenu
-
+from tkinter import END, MULTIPLE, Tk, Menu, filedialog, messagebox, Toplevel, Label, Entry, Button, PhotoImage, StringVar, OptionMenu, Listbox
+from enum import Enum
 from exceptions.invalidJsonData import InvalidJsonDataError
 from api.tags import Tags
 
@@ -37,10 +37,11 @@ def save_json(data, window):
   
 def edit_json_window(data):
   window = Toplevel()
-  window.geometry("400x300")
+  window.geometry("600x600")
   window.title("Editar configuración")
   cnt = 0
   entries = {}
+  tag_listbox = None 
   for key, value in data.items():
     Label(window, text=str(key)+":").grid(row=cnt, column=0)
     if key == "filterTagsBy":
@@ -48,6 +49,21 @@ def edit_json_window(data):
       option_menu = OptionMenu(window, var, "OR", "AND")
       option_menu.grid(row=cnt, column=1)
       entries[key] = var 
+    elif key == "tags":
+      cnt += 1
+      Label(window, text="Tags (selección múltiple):").grid(row=cnt, column=0, sticky="nw")
+      tag_listbox = Listbox(window, selectmode=MULTIPLE, height=10, exportselection=False)
+      tag_listbox.grid(row=cnt, column=1, sticky="w")
+
+      all_tags = [tag.name for tag in Tags]
+      selected_tags = [t.strip() for t in value.split(",")]
+
+      for i, tag in enumerate(all_tags):
+          tag_listbox.insert(END, tag)
+          if tag in selected_tags:
+              tag_listbox.selection_set(i)
+
+      entries[key] = tag_listbox
     else:
       entry = Entry(window)
       entry.grid(row=cnt, column=1)
@@ -60,6 +76,10 @@ def edit_json_window(data):
       for i, key in enumerate(data.keys()):
         if key == "filterTagsBy":
           data[key] = entries[key].get()
+        elif key == "tags":
+          selected_indices = entries[key].curselection()
+          selected_tags = [entries[key].get(i) for i in selected_indices]
+          data[key] = ",".join(selected_tags)
         else:
           data[key] = entries[key].get()  
       validate_json_data(data)
